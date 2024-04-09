@@ -11,6 +11,8 @@ import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityMainBinding
 
 class GameActivity : AppCompatActivity(), View.OnClickListener() {
     private lateinit var binding: ActivityGameBinding
+
+    private  var gameModel : GameModel? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -29,10 +31,29 @@ class GameActivity : AppCompatActivity(), View.OnClickListener() {
         binding.startGameBtn.setOnClickListener {
             startGame()
         }
-
+        GameData.gameModel.observe(this){
+            gameModel = it
+            setUI()
+        }
 
     }
 
+
+    fun setUI(){
+        gameModel?.apply{
+            binding.btn0.text = filledPos[0]
+            binding.btn1.text = filledPos[1]
+            binding.btn2.text = filledPos[2]
+            binding.btn3.text = filledPos[3]
+            binding.btn4.text = filledPos[4]
+            binding.btn5.text = filledPos[5]
+            binding.btn6.text = filledPos[6]
+            binding.btn7.text = filledPos[7]
+            binding.btn8.text = filledPos[8]
+
+        }
+
+    }
     fun startGame(){
 
     }
