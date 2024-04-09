@@ -53,9 +53,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             binding.btn7.text = filledPos[7]
             binding.btn8.text = filledPos[8]
 
+            binding.startGameBtn.visibility = View.VISIBLE
+
             binding.gameStatusTex.text =
                 when(gameStatus){
                     GameStatus.CREATED ->{
+                        binding.startGameBtn.visibility = View.INVISIBLE
                         "Game ID: " + gameId
                     }
                     GameStatus.JOINED ->{
