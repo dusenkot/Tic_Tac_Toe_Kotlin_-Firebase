@@ -89,6 +89,39 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     fun updateGameData(model: GameModel){
         GameData.saveGameModel(model)
     }
+
+    fun  checkForWinner(){
+        val winningPos = arrayOf(
+            intArrayOf(0,1,2),
+            intArrayOf(3,4,5),
+            intArrayOf(6,7,8),
+            intArrayOf(0,3,6),
+            intArrayOf(1,4,7),
+            intArrayOf(2,5,8),
+            intArrayOf(0,4,8),
+            intArrayOf(2,4,6)
+        )
+        gameModel?.apply {
+            for (i in winningPos){
+                //012
+                if (
+                    filledPos[i[0]] == filledPos[i[1]] &&
+                    filledPos[i[1]] == filledPos[i[2]] &&
+                    filledPos[i[0]].isNotEmpty()
+                ){
+                    gameStatus = GameStatus.FINISHED
+                    winner = filledPos[i[0]]
+                }
+            }
+
+            if(filledPos.none(){it.isEmpty()}){
+                gameStatus = GameStatus.FINISHED
+            }
+
+            updateGameData(this)
+        }
+    }
+
     override fun onClick(v: View?) {
         gameModel?.apply {
             if(gameStatus != GameStatus.INPROGRES){
@@ -100,6 +133,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             if(filledPos[clickedPos].isEmpty()){
                 filledPos[clickedPos] = curentPlayer
                 curentPlayer =  if(curentPlayer=="X") "O" else "X"
+                checkForWinner()
                 updateGameData(this)
             }
         }
