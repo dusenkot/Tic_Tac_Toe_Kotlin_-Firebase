@@ -96,7 +96,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             var clickedPos = (v?.tag as String).toInt()
             if(filledPos[clickedPos].isEmpty()){
                 filledPos[clickedPos] = curentPlayer
-                curentPlayer if(curentPlayer=="X") "O" else "X"
+                curentPlayer =  if(curentPlayer=="X") "O" else "X"
                 updateGameData(this)
             }
         }
