@@ -1,5 +1,6 @@
 package com.example.tic_tac_toe_kotlin_firebase
 
+import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -92,6 +93,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 return
             }
             //gra w procesie / game in progress
+            var clickedPos = (v?.tag as String).toInt()
         }
 
     }
