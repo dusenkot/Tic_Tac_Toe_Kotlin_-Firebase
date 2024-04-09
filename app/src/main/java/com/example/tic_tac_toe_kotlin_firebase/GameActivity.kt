@@ -51,6 +51,23 @@ class GameActivity : AppCompatActivity(), View.OnClickListener() {
             binding.btn7.text = filledPos[7]
             binding.btn8.text = filledPos[8]
 
+            binding.gameStatusTex.text =
+                when(gameStatus){
+                    GameStatus.CREATED ->{
+                        "Game ID: " + gameId
+                    }
+                    GameStatus.JOINED ->{
+                        "Click on start Game"
+                    }
+                    GameStatus.INPROGRES ->{
+                        curentPlayer + " turn"
+                    }
+                    GameStatus.FINISHED ->{
+                        if(winner.isNotEmpty()) winner + " Won"
+                        else "Draw"
+                    }
+                }
+
         }
 
     }
