@@ -94,6 +94,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             }
             //gra w procesie / game in progress
             var clickedPos = (v?.tag as String).toInt()
+            if(filledPos[clickedPos].isEmpty()){
+                filledPos[clickedPos] = curentPlayer
+                curentPlayer if(curentPlayer=="X") "O" else "X"
+                updateGameData(this)
+            }
         }
 
     }
