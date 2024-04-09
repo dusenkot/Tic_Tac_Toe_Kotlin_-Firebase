@@ -2,6 +2,7 @@ package com.example.tic_tac_toe_kotlin_firebase
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityGameBinding
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityMainBinding
 
-class GameActivity : AppCompatActivity(), View.OnClickListener() {
+class GameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityGameBinding
 
     private  var gameModel : GameModel? = null
@@ -72,9 +73,26 @@ class GameActivity : AppCompatActivity(), View.OnClickListener() {
 
     }
     fun startGame(){
-
+        gameModel?.apply {
+        updateGameData(
+            GameModel(
+                gameId = gameId,
+                gameStatus = GameStatus.INPROGRES
+            )
+        )
+        }
+    }
+    fun updateGameData(model: GameModel){
+        GameData.saveGameModel(model)
     }
     override fun onClick(v: View?) {
-        TODO("Not yet implemented")
+        gameModel?.apply {
+            if(gameStatus != GameStatus.INPROGRES){
+                Toast.makeText(applicationContext,"Game not started",Toast.LENGTH_SHORT).show()
+                return
+            }
+            //gra w procesie / game in progress
+        }
+
     }
 }
