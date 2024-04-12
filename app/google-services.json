@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555042493186",
+    "project_id": "tic-tac-toe-kotlin-fireb-1a930",
+    "storage_bucket": "tic-tac-toe-kotlin-fireb-1a930.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555042493186:android:e6af576dd3baf3b27e681b",
+        "android_client_info": {
+          "package_name": "com.example.tic_tac_toe_kotlin_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcgvoQxlxqptnd9OOmLiHeXyxNkRDSvus"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

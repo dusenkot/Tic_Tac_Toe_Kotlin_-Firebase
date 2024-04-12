@@ -11,14 +11,18 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityGameBinding
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityMainBinding
 
-class GameActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityGameBinding
+class GameActivity : AppCompatActivity(),View.OnClickListener {
 
-    private  var gameModel : GameModel? = null
+    lateinit var binding: ActivityGameBinding
+
+    private var gameModel : GameModel? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        GameData.fetchGameModel()
 
         binding.btn0.setOnClickListener(this)
         binding.btn1.setOnClickListener(this)
@@ -33,16 +37,19 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         binding.startGameBtn.setOnClickListener {
             startGame()
         }
+
         GameData.gameModel.observe(this){
             gameModel = it
             setUI()
         }
 
+
+
+
     }
 
-
     fun setUI(){
-        gameModel?.apply{
+        gameModel?.apply {
             binding.btn0.text = filledPos[0]
             binding.btn1.text = filledPos[1]
             binding.btn2.text = filledPos[2]
@@ -57,40 +64,53 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
             binding.gameStatusTex.text =
                 when(gameStatus){
-                    GameStatus.CREATED ->{
+                    GameStatus.CREATED -> {
                         binding.startGameBtn.visibility = View.INVISIBLE
-                        "Game ID: " + gameId
+                        "Game ID :"+ gameId
                     }
                     GameStatus.JOINED ->{
-                        "Click on start Game"
+                        "Click on start game"
                     }
-                    GameStatus.INPROGRES ->{
-                        curentPlayer + " turn"
+                    GameStatus.INPROGRESS ->{
+                        binding.startGameBtn.visibility = View.INVISIBLE
+                        when(GameData.myID){
+                            currentPlayer -> "Your turn"
+                            else ->  currentPlayer + " turn"
+                        }
+
                     }
                     GameStatus.FINISHED ->{
-                        if(winner.isNotEmpty()) winner + " Won"
-                        else "Draw"
+                        if(winner.isNotEmpty()) {
+                            when(GameData.myID){
+                                winner -> "You won"
+                                else ->   winner + " Won"
+                            }
+
+                        }
+                        else "DRAW"
                     }
                 }
 
         }
-
     }
+
+
     fun startGame(){
         gameModel?.apply {
-        updateGameData(
-            GameModel(
-                gameId = gameId,
-                gameStatus = GameStatus.INPROGRES
+            updateGameData(
+                GameModel(
+                    gameId = gameId,
+                    gameStatus = GameStatus.INPROGRESS
+                )
             )
-        )
         }
     }
-    fun updateGameData(model: GameModel){
+
+    fun updateGameData(model : GameModel){
         GameData.saveGameModel(model)
     }
 
-    fun  checkForWinner(){
+    fun checkForWinner(){
         val winningPos = arrayOf(
             intArrayOf(0,1,2),
             intArrayOf(3,4,5),
@@ -99,14 +119,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             intArrayOf(1,4,7),
             intArrayOf(2,5,8),
             intArrayOf(0,4,8),
-            intArrayOf(2,4,6)
+            intArrayOf(2,4,6),
         )
+
         gameModel?.apply {
-            for (i in winningPos){
+            for ( i in winningPos){
                 //012
-                if (
+                if(
                     filledPos[i[0]] == filledPos[i[1]] &&
-                    filledPos[i[1]] == filledPos[i[2]] &&
+                    filledPos[i[1]]== filledPos[i[2]] &&
                     filledPos[i[0]].isNotEmpty()
                 ){
                     gameStatus = GameStatus.FINISHED
@@ -114,29 +135,39 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            if(filledPos.none(){it.isEmpty()}){
+            if( filledPos.none(){ it.isEmpty() }){
                 gameStatus = GameStatus.FINISHED
             }
 
+
             updateGameData(this)
+
         }
+
+
     }
 
     override fun onClick(v: View?) {
         gameModel?.apply {
-            if(gameStatus != GameStatus.INPROGRES){
+            if(gameStatus!= GameStatus.INPROGRESS){
                 Toast.makeText(applicationContext,"Game not started",Toast.LENGTH_SHORT).show()
                 return
             }
-            //gra w procesie / game in progress
-            var clickedPos = (v?.tag as String).toInt()
+
+            //game is in progress
+            if(gameId!="-1" && currentPlayer!=GameData.myID ){
+                Toast.makeText(applicationContext,"Not your turn",Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val clickedPos =(v?.tag  as String).toInt()
             if(filledPos[clickedPos].isEmpty()){
-                filledPos[clickedPos] = curentPlayer
-                curentPlayer =  if(curentPlayer=="X") "O" else "X"
+                filledPos[clickedPos] = currentPlayer
+                currentPlayer = if(currentPlayer=="X") "O" else "X"
                 checkForWinner()
                 updateGameData(this)
             }
-        }
 
+        }
     }
 }
