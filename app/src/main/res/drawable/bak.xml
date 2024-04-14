@@ -1,0 +1,34 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/light" />
+        </shape>
+    </item>
+    <!-- First stroke -->
+<!--    <item>-->
+<!--        <shape android:shape="rectangle">-->
+<!--            <stroke-->
+<!--                android:width="3dip"-->
+<!--                android:color="#E9B98B"-->
+<!--                android:dashWidth="70dp"-->
+<!--                android:dashGap="210dp" />-->
+<!--        </shape>-->
+<!--    </item>-->
+    <!-- Second stroke -->
+    <item>
+        <shape android:shape="rectangle">
+            <stroke
+                android:width="4dip"
+                android:color="#E9B98B"
+                android:dashWidth="0dp"
+                android:dashGap="80dp" />
+        </shape>
+    </item>
+</layer-list>
+
+    <!--    <stroke-->
+    <!--        android:width="4dip"-->
+    <!--        android:color="#E9B98B"-->
+    <!--        android:dashWidth="4dp"-->
+    <!--    android:dashGap="8dp" />-->
