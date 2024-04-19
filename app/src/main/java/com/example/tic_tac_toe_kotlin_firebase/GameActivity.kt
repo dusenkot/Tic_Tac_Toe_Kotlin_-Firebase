@@ -3,6 +3,8 @@ package com.example.tic_tac_toe_kotlin_firebase
 import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +18,20 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
     lateinit var binding: ActivityGameBinding
 
     private var gameModel : GameModel? = null
-
+    private lateinit var scaleAnimation: Animation
+    private lateinit var scaleAnimationDown: Animation
+    private lateinit var scaleAnimationJupiter: Animation
+    private lateinit var scaleAnimationDownJupiter: Animation
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_up)
+        scaleAnimationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down)
+        scaleAnimationJupiter = AnimationUtils.loadAnimation(this, R.anim.scale_up_jupiter)
 
+
+        scaleAnimationDownJupiter = AnimationUtils.loadAnimation(this, R.anim.scale_down_jupiter)
         GameData.fetchGameModel()
 
         binding.btn0.setOnClickListener(this)
@@ -36,6 +46,12 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
         binding.startGameBtn.setOnClickListener {
             startGame()
+
+            fun onstartGameBtn() {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
+                binding.btnLayout.startAnimation(animation)
+            }
+            onstartGameBtn()
         }
 
         GameData.gameModel.observe(this){
@@ -59,7 +75,15 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
             binding.btn6.text = filledPos[6]
             binding.btn7.text = filledPos[7]
             binding.btn8.text = filledPos[8]
-
+            binding.img0.setBackgroundResource(filledImgPos[0])
+            binding.img1.setBackgroundResource(filledImgPos[1])
+            binding.img2.setBackgroundResource(filledImgPos[2])
+            binding.img3.setBackgroundResource(filledImgPos[3])
+            binding.img4.setBackgroundResource(filledImgPos[4])
+            binding.img5.setBackgroundResource(filledImgPos[5])
+            binding.img6.setBackgroundResource(filledImgPos[6])
+            binding.img7.setBackgroundResource(filledImgPos[7])
+            binding.img8.setBackgroundResource(filledImgPos[8])
             binding.startGameBtn.visibility = View.VISIBLE
 
             binding.gameStatusTex.text =
@@ -103,6 +127,15 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                     gameStatus = GameStatus.INPROGRESS
                 )
             )
+            if(currentPlayer == "O"){
+                binding.jupiter.setBackgroundResource(R.drawable.jupiter)
+                binding.jupiter.startAnimation(scaleAnimationJupiter)
+            }
+            if(currentPlayer == "X"){
+                binding.star.setBackgroundResource(R.drawable.star)
+                binding.star.startAnimation(scaleAnimation)
+            }
+
         }
     }
 
@@ -163,7 +196,50 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
             val clickedPos =(v?.tag  as String).toInt()
             if(filledPos[clickedPos].isEmpty()){
                 filledPos[clickedPos] = currentPlayer
+                filledImgPos[clickedPos] = if (currentPlayer == "X") R.drawable.starkszyzuwek else R.drawable.jupiterkuwko
+                if(currentPlayer == "X"){
+                    binding.jupiter.setBackgroundResource(R.drawable.jupiter)
+                    binding.jupiter.startAnimation(scaleAnimationJupiter)
+
+                    // Dodaj nasłuchiwacz dla animacji scaleAnimationDown
+                    scaleAnimationDown.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+                        override fun onAnimationEnd(animation: Animation?) {
+                            // Po zakończeniu animacji ustaw tło na 0
+                            binding.star.setBackgroundResource(0)
+                        }
+                        override fun onAnimationRepeat(animation: Animation?) {}
+                    })
+
+                    // Rozpocznij animację scaleAnimationDown
+                    binding.star.startAnimation(scaleAnimationDown)
+                } else {
+                    binding.star.setBackgroundResource(R.drawable.star)
+                    binding.star.startAnimation(scaleAnimation)
+
+                    // Dodaj nasłuchiwacz dla animacji scaleAnimationDown
+                    scaleAnimationDownJupiter.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+                        override fun onAnimationEnd(animation: Animation?) {
+                            // Po zakończeniu animacji ustaw tło na 0
+                            binding.jupiter.setBackgroundResource(0)
+                        }
+                        override fun onAnimationRepeat(animation: Animation?) {}
+                    })
+
+                    // Rozpocznij animację scaleAnimationDown
+                    binding.jupiter.startAnimation(scaleAnimationDownJupiter)
+
+
+//                    binding.star.setBackgroundResource(R.drawable.star)
+//                    binding.star.startAnimation(scaleAnimation)
+
+                    // Rozpocznij animację scaleAnimationDown
+//                    binding.jupiter.startAnimation(scaleAnimationDown)
+                }
+
                 currentPlayer = if(currentPlayer=="X") "O" else "X"
+
                 checkForWinner()
                 updateGameData(this)
             }
