@@ -50,10 +50,22 @@ class MainActivity : AppCompatActivity() {
             }
             onjoinOnlinePlayBtn()
         }
+        binding.SnakeGame.setOnClickListener{
+            createSnakeGame()
+        }
+
 
     }
 
 
+    fun createSnakeGame(){
+        GameData.saveGameModel(
+            GameModel(
+                gameStatus = GameStatus.JOINED
+            )
+        )
+        startGameSnake()
+    }
 
     fun createOfflineGame(){
         GameData.saveGameModel(
@@ -100,6 +112,10 @@ class MainActivity : AppCompatActivity() {
 
     fun startGame(){
         startActivity(Intent(this,GameActivity::class.java))
+    }
+
+    fun startGameSnake(){
+        startActivity(Intent(this,GameActivitySnake::class.java))
     }
 
 

@@ -258,6 +258,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
         binding.btnRestart.setOnClickListener{
             binding.XText.text = "0"
             binding.OText.text = "0"
+            
         }
     }
 }

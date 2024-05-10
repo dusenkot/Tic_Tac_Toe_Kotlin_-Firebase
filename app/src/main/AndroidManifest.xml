@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tic_Tac_Toe_Kotlin_Firebase"
         tools:targetApi="31">
+
+        <activity
+            android:name=".GameActivitySnake"
+            android:exported="false"/>
         <activity
             android:name=".GameActivity"
             android:exported="false" />
