@@ -2,6 +2,8 @@ package com.example.tic_tac_toe_kotlin_firebase
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,21 +22,50 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.playOfflineBtn.setOnClickListener {
             createOfflineGame()
+
+            fun onPlayOfflineClicked() {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
+                binding.playOfflineBtn.startAnimation(animation)
+            }
+            onPlayOfflineClicked()
+
         }
 
         binding.createOnlineGameBtn.setOnClickListener {
             createOnlineGame()
+            fun oncreateOnlineGame() {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
+                binding.createOnlineGameBtn.startAnimation(animation)
+            }
+            oncreateOnlineGame()
         }
 
         binding.joinOnlinePlayBtn.setOnClickListener {
             joinOnlineGame()
+            fun onjoinOnlinePlayBtn() {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
+                binding.joinOnlinePlayBtn.startAnimation(animation)
+            }
+            onjoinOnlinePlayBtn()
         }
+        binding.SnakeGame.setOnClickListener{
+            createSnakeGame()
+        }
+
 
     }
 
+
+    fun createSnakeGame(){
+        GameData.saveGameModel(
+            GameModel(
+                gameStatus = GameStatus.JOINED
+            )
+        )
+        startGameSnake()
+    }
 
     fun createOfflineGame(){
         GameData.saveGameModel(
@@ -82,5 +113,10 @@ class MainActivity : AppCompatActivity() {
     fun startGame(){
         startActivity(Intent(this,GameActivity::class.java))
     }
+
+    fun startGameSnake(){
+        startActivity(Intent(this,GameActivitySnake::class.java))
+    }
+
 
 }
