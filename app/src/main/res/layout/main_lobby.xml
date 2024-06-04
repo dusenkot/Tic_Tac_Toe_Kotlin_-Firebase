@@ -9,5 +9,15 @@
     android:orientation="vertical"
     android:background="@drawable/bak"
     android:padding="4dp"
-    tools:context=".GameActivitySnake">
+    tools:context=".MainLobby">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_x="2dp"
+        android:layout_y="-47dp"
+        android:text="Tic"
+        android:textColor="#E9B98B"
+        android:textSize="150dp"
+        android:textStyle="bold" />
 </LinearLayout>

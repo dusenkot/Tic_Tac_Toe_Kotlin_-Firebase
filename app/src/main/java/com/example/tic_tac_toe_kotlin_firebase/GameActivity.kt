@@ -258,6 +258,8 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
         binding.btnRestart.setOnClickListener{
             binding.XText.text = "0"
             binding.OText.text = "0"
+            X_Winner_Score = 0
+            O_Winner_Score = 0
             
         }
     }
