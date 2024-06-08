@@ -206,7 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
-                android:id="@+id/Snake_game"
+                android:id="@+id/backtolobby"
                 android:layout_width="233dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
@@ -214,7 +214,7 @@
                 android:fontFamily="@font/itim"
                 android:padding="8dp"
 
-                android:text="Snake Game"
+                android:text="Lobby"
                 android:textAllCaps="true"
                 android:textColor="#ECE5D5" />
             <ImageView

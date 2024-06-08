@@ -23,17 +23,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/Theme.Design.NoActionBar"
             android:name=".GameActivitySnake"
-            android:exported="false">
-
+            android:exported="false"
+            >
         </activity>
         <activity
             android:name=".GameActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false">
+            android:exported="true">
+<!--                <intent-filter>-->
+<!--                    <action android:name="android.intent.action.MAIN" />-->
 
+<!--                    <category android:name="android.intent.category.LAUNCHER" />-->
+<!--                </intent-filter>-->
         </activity>
     </application>
 
