@@ -6,43 +6,198 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:orientation="vertical"
     android:background="@drawable/bak"
+    android:orientation="vertical"
     android:padding="4dp"
     tools:context=".MainLobby">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/itim"
-        android:shadowColor="#77000000"
-        android:paddingTop="50dp"
-        android:shadowDx="3.5"
-        android:shadowDy="3.5"
-        android:shadowRadius="2"
-        android:text="Lobby"
-        android:textColor="@color/gray"
-        android:textSize="100dp"
-        android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/gotoTicTacToe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:text="Tic Tac Toe"
-        android:layout_gravity="center"
-        />
+    <!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:fontFamily="@font/itim"-->
+<!--        android:paddingTop="50dp"-->
+<!--        android:shadowColor="#77000000"-->
+<!--        android:shadowDx="3.5"-->
+<!--        android:shadowDy="3.5"-->
+<!--        android:shadowRadius="2"-->
+<!--        android:text="Game Lobby"-->
+<!--        android:textColor="@color/gray"-->
+<!--        android:textSize="52dp"-->
+<!--        android:textStyle="bold" />-->
 
-    <Button
-        android:id="@+id/snakeGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Snake Game"
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center"
-        />
+    <AbsoluteLayout
+        android:layout_width="601dp"
+        android:layout_height="846dp"
+        android:layout_x="0dp"
+        android:layout_y="0dp">
+
+        <ImageView
+            android:id="@+id/jupiter"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+
+            android:layout_x="-47dp"
+            android:layout_y="53dp"
+
+            android:rotation="75"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/jupiter"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+
+            android:layout_x="288dp"
+            android:layout_y="151dp"
+
+            android:rotation="-33"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/star"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/midjourneyimage"
+            android:layout_width="785dp"
+            android:layout_height="654dp"
+
+
+            android:rotation="-50"
+            android:scaleType="centerCrop"
+            android:translationX="-90dp"
+            android:translationY="-400dp"
+            app:srcCompat="@drawable/midjourneyimage"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/gotoTicTacToe"
+            android:layout_width="233dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_x="80dp"
+            android:layout_y="218dp"
+            android:backgroundTint="#4F5D64"
+            android:fontFamily="@font/itim"
+            android:padding="8dp"
+            android:text="PLay Tic Tac Toe"
+            android:textAllCaps="true"
+            android:textColor="#ECE5D5" />
+
+        <ImageView
+            android:id="@+id/ArrowToUp"
+            android:layout_width="331dp"
+            android:layout_height="213dp"
+
+
+            android:layout_x="22dp"
+            android:layout_y="215dp"
+
+
+            android:rotation="-10"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/arrowtoup"
+            tools:visibility="visible" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_x="60dp"
+            android:layout_y="368dp"
+            android:fontFamily="@font/itim"
+            android:shadowColor="#77000000"
+            android:shadowDx="3.5"
+            android:shadowDy="3.5"
+            android:shadowRadius="2"
+            android:text="Game Lobby"
+            android:textColor="@color/gray"
+            android:textSize="52dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ArrowToBottom"
+            android:layout_width="343dp"
+            android:layout_height="211dp"
+
+
+            android:layout_x="39dp"
+            android:layout_y="380dp"
+
+
+            android:rotation="-10"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/arrowtobottom"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/snakeGame"
+            android:layout_width="233dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:layout_x="80dp"
+            android:layout_y="530dp"
+            android:backgroundTint="#4F5D64"
+            android:fontFamily="@font/itim"
+            android:padding="8dp"
+            android:text="PLay Snake Game"
+            android:textAllCaps="true"
+            android:textColor="#ECE5D5" />
+
+
+        <ImageView
+            android:id="@+id/Apple"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+
+            android:layout_x="-2dp"
+            android:layout_y="583dp"
+
+
+            android:rotation="-10"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/apple"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/Snake"
+            android:layout_width="152dp"
+            android:layout_height="109dp"
+
+
+            android:layout_x="174dp"
+            android:layout_y="615dp"
+
+
+            android:rotation="-10"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/litlesnake"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/boardSnake"
+            android:layout_width="744dp"
+            android:layout_height="541dp"
+
+
+            android:layout_x="-185dp"
+            android:layout_y="520dp"
+
+
+            android:rotation="-10"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/boardsnake"
+            tools:visibility="visible" />
+
+    </AbsoluteLayout>
+
+
 </LinearLayout>
 
 

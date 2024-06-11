@@ -1,6 +1,8 @@
 package com.example.tic_tac_toe_kotlin_firebase
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -101,22 +103,23 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                         }
 
                     }
-                    GameStatus.FINISHED ->{
-                        if (currentPlayer == "O"){
-                            O_Winner_Score += 1
-                            binding.XText.text = O_Winner_Score.toString()
-                        }
-                        else
-                            X_Winner_Score += 1
-                            binding.OText.text = X_Winner_Score.toString()
+                    GameStatus.FINISHED -> {
+                        if (winner.isNotEmpty()) {
+                            if (currentPlayer == "O") {
+                                O_Winner_Score += 1
+                                binding.XText.text = O_Winner_Score.toString()
+                            } else {
+                                X_Winner_Score += 1
+                                binding.OText.text = X_Winner_Score.toString()
+                            }
 
-                        if(winner.isNotEmpty()) {
-                            when(GameData.myID) {
+                            when (GameData.myID) {
                                 winner -> "You won"
                                 else -> winner + " Won"
                             }
+                        } else {
+                            "DRAW"
                         }
-                        else "DRAW"
                     }
                 }
 
@@ -133,12 +136,16 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                 )
             )
             if(currentPlayer == "O"){
+
                 binding.jupiter.setBackgroundResource(R.drawable.jupiter)
                 binding.jupiter.startAnimation(scaleAnimationJupiter)
+
             }
             if(currentPlayer == "X"){
+
                 binding.star.setBackgroundResource(R.drawable.star)
                 binding.star.startAnimation(scaleAnimation)
+
             }
 
         }
@@ -167,6 +174,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                     filledPos[i[0]] == filledPos[i[1]] &&
                     filledPos[i[1]]== filledPos[i[2]] &&
                     filledPos[i[0]].isNotEmpty()
+
                 ){
                     gameStatus = GameStatus.FINISHED
                     winner = filledPos[i[0]]
@@ -175,6 +183,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
             if( filledPos.none(){ it.isEmpty() }){
                 gameStatus = GameStatus.FINISHED
+
             }
 
 
@@ -192,7 +201,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                 return
             }
 
-            //game is in progress
+
             if(gameId!="-1" && currentPlayer!=GameData.myID ){
                 Toast.makeText(applicationContext,"Not your turn",Toast.LENGTH_SHORT).show()
                 return
@@ -206,41 +215,32 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
                     binding.jupiter.setBackgroundResource(R.drawable.jupiter)
                     binding.jupiter.startAnimation(scaleAnimationJupiter)
 
-                    // Dodaj nasłuchiwacz dla animacji scaleAnimationDown
                     scaleAnimationDown.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {}
                         override fun onAnimationEnd(animation: Animation?) {
-                            // Po zakończeniu animacji ustaw tło na 0
+
                             binding.star.setBackgroundResource(0)
                         }
                         override fun onAnimationRepeat(animation: Animation?) {}
                     })
 
-                    // Rozpocznij animację scaleAnimationDown
+
                     binding.star.startAnimation(scaleAnimationDown)
                 } else {
                     binding.star.setBackgroundResource(R.drawable.star)
                     binding.star.startAnimation(scaleAnimation)
 
-                    // Dodaj nasłuchiwacz dla animacji scaleAnimationDown
                     scaleAnimationDownJupiter.setAnimationListener(object : Animation.AnimationListener {
                         override fun onAnimationStart(animation: Animation?) {}
                         override fun onAnimationEnd(animation: Animation?) {
-                            // Po zakończeniu animacji ustaw tło na 0
+
                             binding.jupiter.setBackgroundResource(0)
                         }
                         override fun onAnimationRepeat(animation: Animation?) {}
                     })
 
-                    // Rozpocznij animację scaleAnimationDown
                     binding.jupiter.startAnimation(scaleAnimationDownJupiter)
 
-
-//                    binding.star.setBackgroundResource(R.drawable.star)
-//                    binding.star.startAnimation(scaleAnimation)
-
-                    // Rozpocznij animację scaleAnimationDown
-//                    binding.jupiter.startAnimation(scaleAnimationDown)
                 }
 
                 currentPlayer = if(currentPlayer=="X") "O" else "X"

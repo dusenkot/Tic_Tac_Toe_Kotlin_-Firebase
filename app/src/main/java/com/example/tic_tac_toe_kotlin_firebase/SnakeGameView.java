@@ -147,7 +147,7 @@ public class SnakeGameView extends View {
             randomApple();
             apple.reset(arrGrass.get(randomApple()[0]).getX(), arrGrass.get(randomApple()[1]).getY());
         }
-        handler.postDelayed(r, 100);
+        handler.postDelayed(r, 200);
     }
 
     public int[] randomApple(){
