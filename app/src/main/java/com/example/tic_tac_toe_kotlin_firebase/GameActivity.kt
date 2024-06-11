@@ -59,7 +59,6 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
 
 
-
     }
 
 
