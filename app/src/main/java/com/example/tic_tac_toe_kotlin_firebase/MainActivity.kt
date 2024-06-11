@@ -50,9 +50,10 @@ class MainActivity : AppCompatActivity() {
             }
             onjoinOnlinePlayBtn()
         }
-
+        binding.backtolobby.setOnClickListener{
+            backToLobby()
+        }
     }
-
 
 
     fun createOfflineGame(){
@@ -100,6 +101,14 @@ class MainActivity : AppCompatActivity() {
 
     fun startGame(){
         startActivity(Intent(this,GameActivity::class.java))
+    }
+
+    fun startGameSnake(){
+        startActivity(Intent(this,GameActivitySnake::class.java))
+    }
+
+    fun backToLobby(){
+        startActivity(Intent(this,MainLobby::class.java))
     }
 
 }

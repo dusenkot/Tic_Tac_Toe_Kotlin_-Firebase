@@ -1,17 +1,12 @@
 package com.example.tic_tac_toe_kotlin_firebase
 
-import android.hardware.camera2.CameraExtensionSession.StillCaptureLatency
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityGameBinding
-import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityMainBinding
 
 class GameActivity : AppCompatActivity(),View.OnClickListener {
 
@@ -22,6 +17,9 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
     private lateinit var scaleAnimationDown: Animation
     private lateinit var scaleAnimationJupiter: Animation
     private lateinit var scaleAnimationDownJupiter: Animation
+
+    var X_Winner_Score = 0
+    var O_Winner_Score = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -61,8 +59,8 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
 
 
-
     }
+
 
     fun setUI(){
         gameModel?.apply {
@@ -104,12 +102,19 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
                     }
                     GameStatus.FINISHED ->{
-                        if(winner.isNotEmpty()) {
-                            when(GameData.myID){
-                                winner -> "You won"
-                                else ->   winner + " Won"
-                            }
+                        if (currentPlayer == "O"){
+                            O_Winner_Score += 1
+                            binding.XText.text = O_Winner_Score.toString()
+                        }
+                        else
+                            X_Winner_Score += 1
+                            binding.OText.text = X_Winner_Score.toString()
 
+                        if(winner.isNotEmpty()) {
+                            when(GameData.myID) {
+                                winner -> "You won"
+                                else -> winner + " Won"
+                            }
                         }
                         else "DRAW"
                     }
@@ -119,7 +124,7 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
     }
 
 
-    fun startGame(){
+    private fun startGame(){
         gameModel?.apply {
             updateGameData(
                 GameModel(
@@ -240,10 +245,21 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
                 currentPlayer = if(currentPlayer=="X") "O" else "X"
 
+                resetScore()
                 checkForWinner()
                 updateGameData(this)
             }
 
+        }
+    }
+
+    private fun resetScore(){
+        binding.btnRestart.setOnClickListener{
+            binding.XText.text = "0"
+            binding.OText.text = "0"
+            X_Winner_Score = 0
+            O_Winner_Score = 0
+            
         }
     }
 }

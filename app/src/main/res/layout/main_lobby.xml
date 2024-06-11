@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:background="@drawable/bak"
+    android:padding="4dp"
+    tools:context=".MainLobby">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/itim"
+        android:shadowColor="#77000000"
+        android:paddingTop="50dp"
+        android:shadowDx="3.5"
+        android:shadowDy="3.5"
+        android:shadowRadius="2"
+        android:text="Lobby"
+        android:textColor="@color/gray"
+        android:textSize="100dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/gotoTicTacToe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:text="Tic Tac Toe"
+        android:layout_gravity="center"
+        />
+
+    <Button
+        android:id="@+id/snakeGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Snake Game"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        />
+</LinearLayout>
+
+
