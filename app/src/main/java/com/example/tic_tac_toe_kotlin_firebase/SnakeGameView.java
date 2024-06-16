@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -33,17 +34,20 @@ public class SnakeGameView extends View {
     private Handler handler;
     private Runnable r;
     private Apple apple;
-    public static int score = 0, bestScore = 0;
+    public int score = 0, bestScore = 0;
     private Context context;
     public static boolean isPlaying = false;
-    private GameOverListener gameOverListener;
+    private Paint textPaint;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
 
     public SnakeGameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        SharedPreferences sp = context.getSharedPreferences("gamesetting", Context.MODE_PRIVATE);
-        if (sp != null) {
-            bestScore = sp.getInt("bestscore", 0);
+        sharedPreferences = context.getSharedPreferences("gamesetting", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        if (sharedPreferences != null) {
+            bestScore = sharedPreferences.getInt("bestscore", 0);
         }
         bmGrass1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.grass);
         bmGrass1 = Bitmap.createScaledBitmap(bmGrass1, sizeOfMap, sizeOfMap, true);
@@ -71,6 +75,11 @@ public class SnakeGameView extends View {
                 invalidate();
             }
         };
+        //text dla highscore i score
+        textPaint = new Paint();
+        textPaint.setColor(0xFF000000);
+        textPaint.setTextSize(100);
+        textPaint.setAntiAlias(true);
     }
 
     @Override
@@ -120,8 +129,7 @@ public class SnakeGameView extends View {
     @Override
     public void draw(@NonNull Canvas canvas) {
         super.draw(canvas);
-//        backgropund color after 0xff
-        canvas.drawColor(0xFFb5aa5e);
+        canvas.drawColor(0xFFECE5D5);
         for (int i = 0; i < arrGrass.size(); i++) {
             canvas.drawBitmap(arrGrass.get(i).getBm(), arrGrass.get(i).getX(), arrGrass.get(i).getY(), null);
         }
@@ -146,8 +154,15 @@ public class SnakeGameView extends View {
             apple.reset(arrGrass.get(randomApple()[0]).getX(), arrGrass.get(randomApple()[1]).getY());
             snake.addPart();
             score++;
-            //thi is where i want to add the code to update the text_score on my .xml file
+            if (score > bestScore) {
+                bestScore = score;
+            }
         }
+        int x = 100;
+        int y = canvas.getHeight() - 150;
+        canvas.drawText("" + score + "x ", x, y, textPaint);
+        int xbestscore = canvas.getWidth() - 210;
+        canvas.drawText("x" + bestScore, xbestscore, y, textPaint);
         handler.postDelayed(r, 200);
     }
 
@@ -175,9 +190,10 @@ public class SnakeGameView extends View {
 
     private void gameOver() {
         isPlaying = false;
-        if (gameOverListener != null) {
-            gameOverListener.onGameOver();
-        }
+        reset();
+        score = 0;
+        editor.putInt("bestscore", bestScore);
+        editor.apply();
     }
 
     public void reset() {
@@ -192,15 +208,6 @@ public class SnakeGameView extends View {
         }
         snake = new Snake(bmSnake, arrGrass.get(126).getX(), arrGrass.get(126).getY(), 4);
         apple = new Apple(bmApple, arrGrass.get(randomApple()[0]).getX(), arrGrass.get(randomApple()[1]).getY());
-        score = 0;
-    }
-
-    public interface GameOverListener {
-        void onGameOver();
-    }
-
-    public void setGameOverListener(GameOverListener listener) {
-        this.gameOverListener = listener;
     }
 
 }

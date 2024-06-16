@@ -12,16 +12,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 
-class GameActivitySnake : AppCompatActivity(), SnakeGameView.GameOverListener {
+class GameActivitySnake : AppCompatActivity() {
 
     companion object {
-
         @kotlin.jvm.JvmField
         var dialogScore: Dialog? = null
-        var txtScore: TextView? = null
-        var txtBestScore: TextView? = null
-        var txtDialogScore: TextView? = null
-        var txtDialogBestScore: TextView? = null
     }
 
 
@@ -38,10 +33,6 @@ class GameActivitySnake : AppCompatActivity(), SnakeGameView.GameOverListener {
 
         setContentView(R.layout.activity_game_snake)
 
-        gameView = findViewById(R.id.gv)
-        txtScore = findViewById(R.id.txt_score)
-        txtBestScore = findViewById(R.id.txt_best_score)
-
         gameView?.requestFocus()
 
 
@@ -53,16 +44,10 @@ class GameActivitySnake : AppCompatActivity(), SnakeGameView.GameOverListener {
         return gameView?.onKeyDown(keyCode, event) ?: super.onKeyDown(keyCode, event)
     }
 
-    private fun dialogScore() {
-        val sp: SharedPreferences = getSharedPreferences("gamesetting", Context.MODE_PRIVATE)
-        val bestScore = sp.getInt("bestscore", 0)
-        txtBestScore?.text = bestScore.toString()
+    public fun dialogScore() {
 
         dialogScore = Dialog(this).apply {
             setContentView(R.layout.dialog_start)
-            txtDialogScore = findViewById(R.id.txt_dialog_score)
-            txtDialogBestScore = findViewById(R.id.txt_dialog_best_score)
-            txtDialogBestScore?.text = bestScore.toString()
             setCanceledOnTouchOutside(false)
             findViewById<RelativeLayout>(R.id.rl_start).setOnClickListener {
                 gameView?.reset()
@@ -71,8 +56,6 @@ class GameActivitySnake : AppCompatActivity(), SnakeGameView.GameOverListener {
         }
         dialogScore?.show()
     }
-    override fun onGameOver() {
-        dialogScore()
-    }
+
 
 }
