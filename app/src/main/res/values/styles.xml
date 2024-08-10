@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Стиль для ImageButton -->
     <style name="ImageButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/jupiterkuwko</item>
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:fillColor">@android:color/transparent</item>
     </style>
+
+
 </resources>

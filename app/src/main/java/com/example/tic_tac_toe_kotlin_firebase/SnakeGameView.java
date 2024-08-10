@@ -87,7 +87,7 @@ public class SnakeGameView extends View {
         int a = event.getActionMasked();
         switch (a) {
             case MotionEvent.ACTION_MOVE: {
-                if (move == false) {
+                if (!move) {
                     mx = event.getX();
                     my = event.getY();
                     move = true;
@@ -117,8 +117,6 @@ public class SnakeGameView extends View {
                 break;
             }
             case MotionEvent.ACTION_UP: {
-                mx = 0;
-                my = 0;
                 move = false;
                 break;
             }
@@ -163,8 +161,9 @@ public class SnakeGameView extends View {
         canvas.drawText("" + score + "x ", x, y, textPaint);
         int xbestscore = canvas.getWidth() - 210;
         canvas.drawText("x" + bestScore, xbestscore, y, textPaint);
-        handler.postDelayed(r, 200);
+        handler.postDelayed(r, 170); // Зменшено затримку для частішого оновлення
     }
+
 
     public int[] randomApple() {
         int[] xy = new int[2];

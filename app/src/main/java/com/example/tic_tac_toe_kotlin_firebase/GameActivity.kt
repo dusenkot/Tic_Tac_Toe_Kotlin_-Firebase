@@ -1,20 +1,19 @@
 package com.example.tic_tac_toe_kotlin_firebase
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.tic_tac_toe_kotlin_firebase.databinding.ActivityGameBinding
 
-class GameActivity : AppCompatActivity(),View.OnClickListener {
+class GameActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var binding: ActivityGameBinding
 
-    private var gameModel : GameModel? = null
+    private var gameModel: GameModel? = null
     private lateinit var scaleAnimation: Animation
     private lateinit var scaleAnimationDown: Animation
     private lateinit var scaleAnimationJupiter: Animation
@@ -22,6 +21,8 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
     var X_Winner_Score = 0
     var O_Winner_Score = 0
+    private var hasScoreUpdated = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -29,8 +30,6 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
         scaleAnimation = AnimationUtils.loadAnimation(this, R.anim.scale_up)
         scaleAnimationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down)
         scaleAnimationJupiter = AnimationUtils.loadAnimation(this, R.anim.scale_up_jupiter)
-
-
         scaleAnimationDownJupiter = AnimationUtils.loadAnimation(this, R.anim.scale_down_jupiter)
         GameData.fetchGameModel()
 
@@ -46,25 +45,22 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
 
         binding.startGameBtn.setOnClickListener {
             startGame()
-
-            fun onstartGameBtn() {
-                val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
-                binding.btnLayout.startAnimation(animation)
-            }
             onstartGameBtn()
-        }
 
-        GameData.gameModel.observe(this){
+        }
+        resetScore()
+        GameData.gameModel.observe(this) {
             gameModel = it
             setUI()
         }
-
-
-
     }
 
+    private fun onstartGameBtn() {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.button_scale)
+        binding.btnLayout.startAnimation(animation)
+    }
 
-    fun setUI(){
+    fun setUI() {
         gameModel?.apply {
             binding.btn0.text = filledPos[0]
             binding.btn1.text = filledPos[1]
@@ -87,179 +83,176 @@ class GameActivity : AppCompatActivity(),View.OnClickListener {
             binding.startGameBtn.visibility = View.VISIBLE
 
             binding.gameStatusTex.text =
-                when(gameStatus){
+                when (gameStatus) {
                     GameStatus.CREATED -> {
+
                         binding.startGameBtn.visibility = View.INVISIBLE
-                        "Game ID :"+ gameId
+                        "Game ID :" + gameId
                     }
-                    GameStatus.JOINED ->{
+                    GameStatus.JOINED -> {
+
                         "Click on start game"
                     }
-                    GameStatus.INPROGRESS ->{
+                    GameStatus.INPROGRESS -> {
                         binding.startGameBtn.visibility = View.INVISIBLE
-                        when(GameData.myID){
-                            currentPlayer -> "Your turn"
-                            else ->  currentPlayer + " turn"
-                        }
+                        when (GameData.myID) {
 
+                            currentPlayer -> "Your turn"
+                            else -> currentPlayer + " turn"
+
+                        }
                     }
                     GameStatus.FINISHED -> {
                         if (winner.isNotEmpty()) {
-                            if (currentPlayer == "O") {
-                                O_Winner_Score += 1
-                                binding.XText.text = O_Winner_Score.toString()
-                            } else {
-                                X_Winner_Score += 1
-                                binding.OText.text = X_Winner_Score.toString()
+                            if (!hasScoreUpdated) {
+                                hasScoreUpdated = true
+                                if (winner == "O") {
+                                    O_Winner_Score += 1
+                                    binding.OText.text = O_Winner_Score.toString()
+                                } else {
+                                    X_Winner_Score += 1
+                                    binding.XText.text = X_Winner_Score.toString()
+                                }
                             }
-
                             when (GameData.myID) {
                                 winner -> "You won"
-                                else -> winner + " Won"
+                                else -> "$winner Won"
                             }
                         } else {
                             "DRAW"
                         }
+
                     }
                 }
-
+            updateCurrentPlayerAnimation(currentPlayer)
         }
     }
 
-
-    private fun startGame(){
+    private fun startGame() {
         gameModel?.apply {
+            hasScoreUpdated = false
             updateGameData(
                 GameModel(
                     gameId = gameId,
+
                     gameStatus = GameStatus.INPROGRESS
                 )
             )
-            if(currentPlayer == "O"){
-
-                binding.jupiter.setBackgroundResource(R.drawable.jupiter)
-                binding.jupiter.startAnimation(scaleAnimationJupiter)
-
-            }
-            if(currentPlayer == "X"){
-
-                binding.star.setBackgroundResource(R.drawable.star)
-                binding.star.startAnimation(scaleAnimation)
-
-            }
-
+            updateCurrentPlayerAnimation(currentPlayer)
         }
     }
 
-    fun updateGameData(model : GameModel){
+    private fun updateGameData(model: GameModel) {
+        hasScoreUpdated = false
         GameData.saveGameModel(model)
     }
 
-    fun checkForWinner(){
+    private fun checkForWinner() {
         val winningPos = arrayOf(
-            intArrayOf(0,1,2),
-            intArrayOf(3,4,5),
-            intArrayOf(6,7,8),
-            intArrayOf(0,3,6),
-            intArrayOf(1,4,7),
-            intArrayOf(2,5,8),
-            intArrayOf(0,4,8),
-            intArrayOf(2,4,6),
+            intArrayOf(0, 1, 2),
+            intArrayOf(3, 4, 5),
+            intArrayOf(6, 7, 8),
+            intArrayOf(0, 3, 6),
+            intArrayOf(1, 4, 7),
+            intArrayOf(2, 5, 8),
+            intArrayOf(0, 4, 8),
+            intArrayOf(2, 4, 6),
         )
 
         gameModel?.apply {
-            for ( i in winningPos){
-                //012
-                if(
+            for (i in winningPos) {
+                if (
                     filledPos[i[0]] == filledPos[i[1]] &&
-                    filledPos[i[1]]== filledPos[i[2]] &&
+                    filledPos[i[1]] == filledPos[i[2]] &&
                     filledPos[i[0]].isNotEmpty()
+                ) {
 
-                ){
                     gameStatus = GameStatus.FINISHED
+
                     winner = filledPos[i[0]]
+
                 }
             }
 
-            if( filledPos.none(){ it.isEmpty() }){
+            if (filledPos.none { it.isEmpty() }) {
+
                 gameStatus = GameStatus.FINISHED
 
             }
-
-
-            updateGameData(this)
+            resetScore()
 
         }
-
-
     }
 
     override fun onClick(v: View?) {
         gameModel?.apply {
-            if(gameStatus!= GameStatus.INPROGRESS){
-                Toast.makeText(applicationContext,"Game not started",Toast.LENGTH_SHORT).show()
+            if (gameStatus != GameStatus.INPROGRESS) {
+                Toast.makeText(applicationContext, "Game not started", Toast.LENGTH_SHORT).show()
+
                 return
             }
 
+            if (gameId != "-1" && currentPlayer != GameData.myID) {
+                Toast.makeText(applicationContext, "Not your turn", Toast.LENGTH_SHORT).show()
 
-            if(gameId!="-1" && currentPlayer!=GameData.myID ){
-                Toast.makeText(applicationContext,"Not your turn",Toast.LENGTH_SHORT).show()
                 return
             }
 
-            val clickedPos =(v?.tag  as String).toInt()
-            if(filledPos[clickedPos].isEmpty()){
+            val clickedPos = (v?.tag as String).toInt()
+            if (filledPos[clickedPos].isEmpty()) {
                 filledPos[clickedPos] = currentPlayer
                 filledImgPos[clickedPos] = if (currentPlayer == "X") R.drawable.starkszyzuwek else R.drawable.jupiterkuwko
-                if(currentPlayer == "X"){
-                    binding.jupiter.setBackgroundResource(R.drawable.jupiter)
-                    binding.jupiter.startAnimation(scaleAnimationJupiter)
 
-                    scaleAnimationDown.setAnimationListener(object : Animation.AnimationListener {
-                        override fun onAnimationStart(animation: Animation?) {}
-                        override fun onAnimationEnd(animation: Animation?) {
-
-                            binding.star.setBackgroundResource(0)
-                        }
-                        override fun onAnimationRepeat(animation: Animation?) {}
-                    })
-
-
-                    binding.star.startAnimation(scaleAnimationDown)
-                } else {
-                    binding.star.setBackgroundResource(R.drawable.star)
-                    binding.star.startAnimation(scaleAnimation)
-
-                    scaleAnimationDownJupiter.setAnimationListener(object : Animation.AnimationListener {
-                        override fun onAnimationStart(animation: Animation?) {}
-                        override fun onAnimationEnd(animation: Animation?) {
-
-                            binding.jupiter.setBackgroundResource(0)
-                        }
-                        override fun onAnimationRepeat(animation: Animation?) {}
-                    })
-
-                    binding.jupiter.startAnimation(scaleAnimationDownJupiter)
-
-                }
-
-                currentPlayer = if(currentPlayer=="X") "O" else "X"
-
-                resetScore()
                 checkForWinner()
-                updateGameData(this)
-            }
 
+                currentPlayer = if (currentPlayer == "X") "O" else "X"
+
+                updateCurrentPlayerAnimation(currentPlayer)
+
+                updateGameData(this)
+
+            }
         }
     }
 
-    private fun resetScore(){
-        binding.btnRestart.setOnClickListener{
+    private fun updateCurrentPlayerAnimation(currentPlayer: String) {
+        if (currentPlayer == "X") {
+            binding.star.setBackgroundResource(R.drawable.star)
+            binding.star.startAnimation(scaleAnimation)
+
+            scaleAnimationDownJupiter.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.jupiter.setBackgroundResource(0)
+                }
+                override fun onAnimationRepeat(animation: Animation?) {}
+            })
+            binding.jupiter.startAnimation(scaleAnimationDownJupiter)
+        } else if (currentPlayer == "O") {
+            binding.jupiter.setBackgroundResource(R.drawable.jupiter)
+            binding.jupiter.startAnimation(scaleAnimationJupiter)
+
+            scaleAnimationDown.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {}
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.star.setBackgroundResource(0)
+                }
+                override fun onAnimationRepeat(animation: Animation?) {}
+            })
+            binding.star.startAnimation(scaleAnimationDown)
+        }
+    }
+    private fun resetScore() {
+        binding.btnRestart.setOnClickListener {
             binding.XText.text = "0"
             binding.OText.text = "0"
             X_Winner_Score = 0
             O_Winner_Score = 0
-            
+
+
         }
     }
 }
+
+
+
