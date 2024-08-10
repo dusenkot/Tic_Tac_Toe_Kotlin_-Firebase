@@ -1,5 +1,10 @@
 # Game Lobby Project
 
+## Contributors
+- Taras Dushenko - [GitHub Profile](https://github.com/dusenkot)
+- Mateusz Cislo - [GitHub Profile](https://github.com/Kaellji)
+- Ostap Maksymiv - [GitHub Profile](https://github.com/OstapMaksymiv)
+
 ## Overview
 
 The Game Lobby Project is a mobile application developed for Android devices, featuring two classic games: Tic-Tac-Toe and Snake. This project was created for university purposes and was developed by three contributors: Taras Dushenko, Mateusz Cislo, and Ostap Maksymiv. Below is an overview of the project's features, setup instructions, and usage guidelines.
@@ -62,6 +67,4 @@ If you would like to contribute to the project, please follow these steps:
 3. Make your modifications and commit them.
 4. Submit a pull request with a detailed description of your changes.
 
-## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
 
