@@ -59,6 +59,9 @@ The project is organized as follows:
 3. Build the APK:
    - Rebuild the project to include the new icons in the APK.
 
+## APK File
+   [Download the file](https://drive.google.com/file/d/1wcvfttlKxLIHgGxFNmhmAADqRM0frxdT/view?usp=sharing)
+   
 ## Contribution
 If you would like to contribute to the project, please follow these steps:
 
