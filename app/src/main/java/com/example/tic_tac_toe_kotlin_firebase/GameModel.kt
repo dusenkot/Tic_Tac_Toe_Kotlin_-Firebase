@@ -8,7 +8,9 @@ data class GameModel (
     var filledImgPos : MutableList<Int> = MutableList(9) { R.color.transparent },
     var winner : String ="",
     var gameStatus : GameStatus = GameStatus.CREATED,
-    var currentPlayer : String = (arrayOf("X","O"))[Random.nextInt(2)]
+    var currentPlayer : String = (arrayOf("X","O"))[Random.nextInt(2)],
+
+
 )
 {
 }
