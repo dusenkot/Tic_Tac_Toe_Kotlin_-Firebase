@@ -54,13 +54,14 @@ The project is organized as follows:
 3. Build the APK:
    - Rebuild the project to include the new icons in the APK.
 
-### Changing the Theme
-To customize the application's theme:
-1. Edit Styles:
-   - Update the styles in `res/values/styles.xml` to define the appearance of your application.
-   ```xml
-   <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-       <!-- Customizations for the theme -->
-       <item name="android:statusBarColor">@android:color/transparent</item>
-       <item name="android:windowFullscreen">true</item>
-   </style>
+## Contribution
+If you would like to contribute to the project, please follow these steps:
+
+1. Fork the repository on GitHub.
+2. Create a new branch for your changes.
+3. Make your modifications and commit them.
+4. Submit a pull request with a detailed description of your changes.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
